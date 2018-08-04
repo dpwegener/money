@@ -24,14 +24,17 @@ template<int8_t Precission>
 class Price {
 public:
     Price() = default;
-    Price(int32_t value) : value_(value * PRICE_SCALE) {};
-    Price(double value) : value_(normalize(value * PRICE_SCALE)) {};
+    explicit Price(int32_t value) : value_(value * PRICE_SCALE) {};
+    explicit Price(double value) : value_(normalize(value * PRICE_SCALE)) {};
+    Price(Price const & rhs) : value_(normalize(rhs.value_)) {};
+    template<int8_t Prec2>
+    Price(Price<Prec2> const & rhs) : value_(normalize(rhs.rawValue())) {};
     static constexpr int64_t minPrice_ = PRICE_SCALE / PowerOf10<Precission>::value;
-    int64_t minPrice() {return minPrice_;}
+    int64_t minPrice() const {return minPrice_;}
 
-    int64_t rawValue() {return value_;}
+    int64_t rawValue() const {return value_;}
 private:
-    int64_t normalize(int64_t target) {
+    int64_t normalize(int64_t target) const {
         return ((target + 1 + (minPrice_ / 2)) / minPrice_) * minPrice_;
     }
 
