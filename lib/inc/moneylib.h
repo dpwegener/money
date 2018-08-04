@@ -45,6 +45,14 @@ public:
         value_ = normalize(rhs.rawValue());
         return *this;
     }
+    Price & operator =(int32_t rhs) {
+        value_ = rhs * PRICE_SCALE;
+        return *this;
+    }
+    Price & operator = (double rhs) {
+        value_ = normalize(rhs * PRICE_SCALE);
+        return *this;
+    }
 
     Price operator +(int32_t rhs) const {
         Price result(rhs);

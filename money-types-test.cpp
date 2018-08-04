@@ -135,4 +135,10 @@ TEST_CASE("Assign prices to Price<4>(1.2345", "[Money][Add]") {
     SECTION("Assigning Price<0>(4)") {
         REQUIRE((out = Dollar(4)).rawValue() == 4 * PRICE_SCALE);
     }
+    SECTION("Assigning 4.56789") {
+        REQUIRE((out = 4.56789).rawValue() == 45679 * (PRICE_SCALE / 10000));
+    }
+    SECTION("Assigning 4") {
+        REQUIRE((out = 4).rawValue() == 4 * PRICE_SCALE);
+    }
 }
