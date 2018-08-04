@@ -68,6 +68,19 @@ public:
         return result;
     }
 
+    Price operator +(Price const & rhs) const {
+        Price result;
+        result.value_ = value_ + rhs.value_;
+        return result;
+    }
+
+    template<int8_t Prec2>
+    Price operator +(Price<Prec2> const & rhs) const {
+        Price result;
+        result.value_ = normalize(value_ + rhs.value_);
+        return result;
+    }
+
     enum {minPrice_ = PRICE_SCALE / PowerOf10<Precission>::value};
     int64_t minPrice() const {return minPrice_;}
 

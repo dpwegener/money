@@ -118,6 +118,19 @@ TEST_CASE("Add doubles to Price<4>(1.2345", "[Money][Add]") {
     }
 }
 
+TEST_CASE("Add Prices to Price<4>(1.2345)", "[Money][Add]") {
+    HundrethPenny out(1.2345);
+    SECTION("Adding 1.1 gives 2.3345") {
+        REQUIRE((out + HundrethPenny(1.1)).rawValue() == 23345 * (PRICE_SCALE / 10000));
+    }
+    SECTION("Adding Price<2>(1.1) gives 2.3345") {
+        REQUIRE((out + Dime(1.1)).rawValue() == 23345 * (PRICE_SCALE / 10000));
+    }
+    SECTION("Adding out to Price<2>(1.1) gives 2.3") {
+        REQUIRE((Dime(1.1) + out).rawValue() == 23 * (PRICE_SCALE / 10));
+    }
+}
+
 TEST_CASE("Assign prices to Price<4>(1.2345", "[Money][Add]") {
     HundrethPenny out(1.2345);
     SECTION("Assigning 4.5678") {
