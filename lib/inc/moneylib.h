@@ -38,7 +38,7 @@ public:
     Price() = default;
     explicit Price(int32_t value) : value_(value * PRICE_SCALE) {};
     explicit Price(double value) : value_(normalize(value * PRICE_SCALE)) {};
-    Price(Price const & rhs) : value_(normalize(rhs.value_)) {};
+    Price(Price const & rhs) = default;
     template<int8_t Prec2>
     Price(Price<Prec2> const & rhs) : value_(normalize(rhs.value_)) {};
     Price & operator = (Price const & rhs) = default;
