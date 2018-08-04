@@ -39,6 +39,12 @@ public:
     Price(Price const & rhs) : value_(normalize(rhs.value_)) {};
     template<int8_t Prec2>
     Price(Price<Prec2> const & rhs) : value_(normalize(rhs.rawValue())) {};
+    Price & operator = (Price const & rhs) = default;
+    template<int8_t Prec2>
+    Price & operator = (Price<Prec2> const & rhs) {
+        value_ = normalize(rhs.rawValue());
+        return *this;
+    }
 
     Price operator +(int32_t rhs) const {
         Price result(rhs);
