@@ -86,3 +86,26 @@ TEST_CASE("Comprehensive rounding test", "[Money][Round]") {
         REQUIRE(Dollar(static_cast<double> (i) / 100000.0).rawValue() == ((i + 50000) / 100000) * PRICE_SCALE);
     }
 }
+
+TEST_CASE("Comprehensive negative rounding test", "[Money][Round]") {
+    for (int i = 0; i <= 100000; i++) {
+        HundrethPenny out(static_cast<double> (-i) / 100000.0);
+        REQUIRE(out.rawValue() == ((-i - 5) / 10) * (PRICE_SCALE / 10000));
+        REQUIRE(TenthPenny(static_cast<double> (-i) / 100000.0).rawValue() == ((-i - 50) / 100) * (PRICE_SCALE / 1000));
+        REQUIRE(Penny(static_cast<double> (-i) / 100000.0).rawValue() == ((-i - 500) / 1000) * (PRICE_SCALE / 100));
+        REQUIRE(Dime(static_cast<double> (-i) / 100000.0).rawValue() == ((-i + -5000) / 10000) * (PRICE_SCALE / 10));
+        REQUIRE(Dollar(static_cast<double> (-i) / 100000.0).rawValue() == ((-i + -50000) / 100000) * PRICE_SCALE);
+    }
+}
+
+TEST_CASE("Add integers to Price<4>(1.2345)", "[Money][Add]") {
+    HundrethPenny out(1.2345);
+    SECTION("Adding 1 gives 2.2345") {
+        REQUIRE((out + 1).rawValue() == 22345 * (PRICE_SCALE / 10000));
+        REQUIRE((1 + out).rawValue() == 22345 * (PRICE_SCALE / 10000));
+    }
+    SECTION("Adding -2 gives -.7655") {
+        REQUIRE((out + -2).rawValue() == -7655 * (PRICE_SCALE / 10000));
+        REQUIRE((-2 + out).rawValue() == -7655 * (PRICE_SCALE / 10000));
+    }
+}

@@ -22,6 +22,11 @@ struct PowerOf10<0> {
 
 template<int8_t Precission>
 class Price {
+    friend Price operator +(const int arg1, Price const & arg2) {
+        Price result(arg1);
+        result.value_ += arg2.value_;
+        return result;
+    }
 public:
     Price() = default;
     explicit Price(int32_t value) : value_(value * PRICE_SCALE) {};
@@ -29,13 +34,24 @@ public:
     Price(Price const & rhs) : value_(normalize(rhs.value_)) {};
     template<int8_t Prec2>
     Price(Price<Prec2> const & rhs) : value_(normalize(rhs.rawValue())) {};
+
+    Price operator +(int32_t rhs) const {
+        Price result(rhs);
+        result.value_ += value_;
+        return result;
+    }
+
     static constexpr int64_t minPrice_ = PRICE_SCALE / PowerOf10<Precission>::value;
     int64_t minPrice() const {return minPrice_;}
 
     int64_t rawValue() const {return value_;}
 private:
     int64_t normalize(int64_t target) const {
-        return ((target + 1 + (minPrice_ / 2)) / minPrice_) * minPrice_;
+        if (target < 0) {
+            return ((target - 1 - (minPrice_ / 2)) / minPrice_) * minPrice_;
+        } else {
+            return ((target + 1 + (minPrice_ / 2)) / minPrice_) * minPrice_;
+        }
     }
 
     //enum {precission_ = Precission};
