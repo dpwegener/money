@@ -32,17 +32,19 @@ class Price {
         result.value_ += arg2.value_;
         return result;
     }
+    template<int8_t Prec2>
+    friend class Price;
 public:
     Price() = default;
     explicit Price(int32_t value) : value_(value * PRICE_SCALE) {};
     explicit Price(double value) : value_(normalize(value * PRICE_SCALE)) {};
     Price(Price const & rhs) : value_(normalize(rhs.value_)) {};
     template<int8_t Prec2>
-    Price(Price<Prec2> const & rhs) : value_(normalize(rhs.rawValue())) {};
+    Price(Price<Prec2> const & rhs) : value_(normalize(rhs.value_)) {};
     Price & operator = (Price const & rhs) = default;
     template<int8_t Prec2>
     Price & operator = (Price<Prec2> const & rhs) {
-        value_ = normalize(rhs.rawValue());
+        value_ = normalize(rhs.value_);
         return *this;
     }
     Price & operator =(int32_t rhs) {
