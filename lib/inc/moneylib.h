@@ -27,6 +27,11 @@ class Price {
         result.value_ += arg2.value_;
         return result;
     }
+    friend Price operator +(const double arg1, Price const & arg2) {
+        Price result(arg1);
+        result.value_ += arg2.value_;
+        return result;
+    }
 public:
     Price() = default;
     explicit Price(int32_t value) : value_(value * PRICE_SCALE) {};
@@ -36,6 +41,12 @@ public:
     Price(Price<Prec2> const & rhs) : value_(normalize(rhs.rawValue())) {};
 
     Price operator +(int32_t rhs) const {
+        Price result(rhs);
+        result.value_ += value_;
+        return result;
+    }
+
+    Price operator +(double rhs) const {
         Price result(rhs);
         result.value_ += value_;
         return result;

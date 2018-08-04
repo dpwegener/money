@@ -109,3 +109,11 @@ TEST_CASE("Add integers to Price<4>(1.2345)", "[Money][Add]") {
         REQUIRE((-2 + out).rawValue() == -7655 * (PRICE_SCALE / 10000));
     }
 }
+
+TEST_CASE("Add doubles to Price<4>(1.2345", "[Money][Add]") {
+    HundrethPenny out(1.2345);
+    SECTION("Adding 1.1 gives 2.3345") {
+        REQUIRE((out + 1.1).rawValue() == 23345 * (PRICE_SCALE / 10000));
+        REQUIRE((1.1 + out).rawValue() == 23345 * (PRICE_SCALE / 10000));
+    }
+}
