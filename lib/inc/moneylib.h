@@ -7,6 +7,7 @@ constexpr int32_t PRICE_SCALE = 10000000;
 
 template<int Power>
 struct PowerOf10 {
+    static_assert(Power < 8, "Power of 10 must be less than 8");
     static constexpr int value = 10 * PowerOf10<Power - 1>::value;
 };
 
