@@ -5,6 +5,10 @@
 
 constexpr int32_t PRICE_SCALE = 10000000;
 
+static constexpr int powerOfTen(u_int8_t exponent) {
+    return exponent == 0 ? 1 : 10 * powerOfTen(exponent -1);
+}
+
 template<int Power>
 struct PowerOf10 {
     static_assert(Power < 8, "Power of 10 must be less than 8");
@@ -82,7 +86,7 @@ public:
         return result;
     }
 
-    enum {minPrice_ = PRICE_SCALE / PowerOf10<Precission>::value};
+    enum {minPrice_ = PRICE_SCALE / powerOfTen(Precission)};
     int64_t minPrice() const {return minPrice_;}
 
     int64_t rawValue() const {return value_;}
