@@ -5,7 +5,7 @@
 
 constexpr int32_t PRICE_SCALE = 10000000;
 
-static constexpr int powerOfTen(u_int8_t exponent) {
+static constexpr int powerOfTen(uint8_t exponent) {
     return exponent == 0 ? 1 : 10 * powerOfTen(exponent -1);
 }
 
@@ -27,12 +27,12 @@ struct PowerOf10<0> {
 
 template<int8_t Precission>
 class Price {
-    friend Price operator +(const int arg1, Price const & arg2) {
+    friend Price operator +(int32_t arg1, Price const & arg2) {
         Price result(arg1);
         result.value_ += arg2.value_;
         return result;
     }
-    friend Price operator +(const double arg1, Price const & arg2) {
+    friend Price operator +(double arg1, Price const & arg2) {
         Price result(arg1);
         result.value_ += arg2.value_;
         return result;
@@ -41,7 +41,7 @@ class Price {
     friend class Price;
 public:
     Price() = default;
-    explicit Price(int32_t value) : value_(value * PRICE_SCALE) {};
+    explicit Price(int32_t value) : value_((int64_t) value * PRICE_SCALE) {};
     explicit Price(double value) : value_(normalize(value * PRICE_SCALE)) {};
     Price(Price const & rhs) = default;
     template<int8_t Prec2>

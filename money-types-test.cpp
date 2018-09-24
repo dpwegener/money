@@ -59,7 +59,7 @@ TEST_CASE("Construct Prices", "[Money][Constructor]") {
         REQUIRE(out.rawValue() == 0);
     }
     SECTION("Integer argument") {
-        REQUIRE(HundrethPenny(1234).rawValue() == 1234 * PRICE_SCALE);
+        REQUIRE(HundrethPenny(1234).rawValue() == (int64_t)1234 * PRICE_SCALE);
     }
 
     SECTION("Double argument") {
@@ -102,11 +102,13 @@ TEST_CASE("Add integers to Price<4>(1.2345)", "[Money][Add]") {
     HundrethPenny out(1.2345);
     SECTION("Adding 1 gives 2.2345") {
         REQUIRE((out + 1).rawValue() == 22345 * (PRICE_SCALE / 10000));
-        REQUIRE((1 + out).rawValue() == 22345 * (PRICE_SCALE / 10000));
+        auto actual = 1 + out;
+        REQUIRE(actual.rawValue() == 22345 * (PRICE_SCALE / 10000));
     }
     SECTION("Adding -2 gives -.7655") {
         REQUIRE((out + -2).rawValue() == -7655 * (PRICE_SCALE / 10000));
-        REQUIRE((-2 + out).rawValue() == -7655 * (PRICE_SCALE / 10000));
+        auto actual = -2 + out;
+        REQUIRE(actual.rawValue() == -7655 * (PRICE_SCALE / 10000));
     }
 }
 
@@ -114,7 +116,8 @@ TEST_CASE("Add doubles to Price<4>(1.2345", "[Money][Add]") {
     HundrethPenny out(1.2345);
     SECTION("Adding 1.1 gives 2.3345") {
         REQUIRE((out + 1.1).rawValue() == 23345 * (PRICE_SCALE / 10000));
-        REQUIRE((1.1 + out).rawValue() == 23345 * (PRICE_SCALE / 10000));
+        auto actual = 1.1 + out;
+        REQUIRE(actual.rawValue() == 23345 * (PRICE_SCALE / 10000));
     }
 }
 
