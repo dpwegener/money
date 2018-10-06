@@ -12,17 +12,17 @@ static constexpr int powerOfTen(uint8_t const exponent) noexcept {
 template<int Power>
 struct PowerOf10 {
     static_assert(Power < 8, "Power of 10 must be less than 8");
-    static constexpr int value = 10 * PowerOf10<Power - 1>::value;
+    static constexpr uint32_t value = 10 * PowerOf10<Power - 1>::value;
 };
 
 template<>
 struct PowerOf10<1> {
-    static constexpr int value = 10;
+    static constexpr uint32_t value = 10;
 };
 
 template<>
 struct PowerOf10<0> {
-    static constexpr int value = 1;
+    static constexpr uint32_t value = 1;
 };
 
 template<int8_t Precission>
