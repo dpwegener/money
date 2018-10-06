@@ -5,7 +5,7 @@
 
 constexpr int32_t PRICE_SCALE = 10000000;
 
-static constexpr int powerOfTen(uint8_t exponent) {
+static constexpr int powerOfTen(uint8_t const exponent) noexcept {
     return exponent == 0 ? 1 : 10 * powerOfTen(exponent -1);
 }
 
@@ -27,12 +27,12 @@ struct PowerOf10<0> {
 
 template<int8_t Precission>
 class Price {
-    friend Price operator +(int32_t arg1, Price const & arg2) {
+    friend Price operator +(int32_t const arg1, Price const & arg2) {
         Price result(arg1);
         result.value_ += arg2.value_;
         return result;
     }
-    friend Price operator +(double arg1, Price const & arg2) {
+    friend Price operator +(double const arg1, Price const & arg2) {
         Price result(arg1);
         result.value_ += arg2.value_;
         return result;
@@ -41,8 +41,8 @@ class Price {
     friend class Price;
 public:
     Price() = default;
-    explicit Price(int32_t value) : value_((int64_t) value * PRICE_SCALE) {};
-    explicit Price(double value) : value_(normalize(value * PRICE_SCALE)) {};
+    explicit Price(int32_t const value) : value_(((int64_t) value) * PRICE_SCALE) {};
+    explicit Price(double const value) : value_(normalize(value * PRICE_SCALE)) {};
     Price(Price const & rhs) = default;
     template<int8_t Prec2>
     Price(Price<Prec2> const & rhs) : value_(normalize(rhs.value_)) {};
@@ -52,22 +52,22 @@ public:
         value_ = normalize(rhs.value_);
         return *this;
     }
-    Price & operator =(int32_t rhs) {
+    Price & operator =(int32_t const rhs) {
         value_ = rhs * PRICE_SCALE;
         return *this;
     }
-    Price & operator = (double rhs) {
+    Price & operator = (double const rhs) {
         value_ = normalize(rhs * PRICE_SCALE);
         return *this;
     }
 
-    Price operator +(int32_t rhs) const {
+    Price operator +(int32_t const rhs) const {
         Price result(rhs);
         result.value_ += value_;
         return result;
     }
 
-    Price operator +(double rhs) const {
+    Price operator +(double const rhs) const {
         Price result(rhs);
         result.value_ += value_;
         return result;
@@ -86,7 +86,8 @@ public:
         return result;
     }
 
-    enum {minPrice_ = PRICE_SCALE / powerOfTen(Precission)};
+//    enum {minPrice_ = PRICE_SCALE / powerOfTen(Precission)};
+    enum {minPrice_ = PRICE_SCALE / PowerOf10<Precission>::value};
     int64_t minPrice() const {return minPrice_;}
 
     int64_t rawValue() const {return value_;}
