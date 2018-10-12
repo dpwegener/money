@@ -5,7 +5,7 @@
 
 constexpr int32_t PRICE_SCALE = 10000000;
 
-static constexpr int powerOfTen(uint8_t const exponent) noexcept {
+static constexpr uint32_t powerOfTen(uint8_t const exponent) noexcept {
     return exponent == 0 ? 1 : 10 * powerOfTen(exponent -1);
 }
 
