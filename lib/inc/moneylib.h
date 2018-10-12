@@ -86,8 +86,8 @@ public:
         return result;
     }
 
-//    enum {minPrice_ = PRICE_SCALE / powerOfTen(Precission)};
-    enum {minPrice_ = PRICE_SCALE / PowerOf10<Precission>::value};
+    enum {minPrice_ = PRICE_SCALE / powerOfTen(Precission)};
+//    enum {minPrice_ = PRICE_SCALE / PowerOf10<Precission>::value};
     int64_t minPrice() const {return minPrice_;}
 
     int64_t rawValue() const {return value_;}
