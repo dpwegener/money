@@ -86,7 +86,8 @@ public:
         return result;
     }
 
-    enum {minPrice_ = MAX_SCALE / powerOfTen(Scale)};
+    enum {minPrice_ = MAX_SCALE / powerOfTen(Scale),
+          halfMin_ = minPrice_ / 2};
 //    enum {minPrice_ = MAX_SCALE / PowerOf10<Scale>::value};
     int64_t minPrice() const {return minPrice_;}
 
@@ -97,15 +98,15 @@ private:
             return 0;
         }
         if (target < 0) {
-            if (target > minPrice_ / 2) {
+            if (target > -halfMin_) {
                 return 0;
             }
-            return ((target - 1 - (minPrice_ / 2)) / minPrice_) * minPrice_;
+            return ((target - 1 - halfMin_) / minPrice_) * minPrice_;
         } else {
-            if (target < minPrice_ / 2) {
+            if (target < halfMin_) {
                 return 0;
             }
-            return ((target + 1 + (minPrice_ / 2)) / minPrice_) * minPrice_;
+            return ((target + 1 + halfMin_) / minPrice_) * minPrice_;
         }
     }
 
