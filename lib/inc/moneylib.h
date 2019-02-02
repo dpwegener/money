@@ -3,13 +3,13 @@
 
 #include <cstdint>
 
-constexpr int32_t PRICE_SCALE = 10000000;
+constexpr int32_t MAX_SCALE = 10000000;
 
 static constexpr uint32_t powerOfTen(uint8_t const exponent) noexcept {
-    return exponent == 0 ? 1 : 10 * powerOfTen(exponent -1);
+    return exponent == 0 ? 1 : 10 * powerOfTen(exponent - 1);
 }
 
-template<int Power>
+template<uint8_t Power>
 struct PowerOf10 {
     static_assert(Power < 8, "Power of 10 must be less than 8");
     static constexpr uint32_t value = 10 * PowerOf10<Power - 1>::value;
@@ -25,7 +25,7 @@ struct PowerOf10<0> {
     static constexpr uint32_t value = 1;
 };
 
-template<int8_t Precission>
+template<int8_t Scale>
 class Price {
     friend Price operator +(int32_t const arg1, Price const & arg2) {
         Price result(arg1);
@@ -37,27 +37,27 @@ class Price {
         result.value_ += arg2.value_;
         return result;
     }
-    template<int8_t Prec2>
+    template<int8_t Scale2>
     friend class Price;
 public:
     Price() = default;
-    explicit Price(int32_t const value) : value_(((int64_t) value) * PRICE_SCALE) {};
-    explicit Price(double const value) : value_(normalize(value * PRICE_SCALE)) {};
+    explicit Price(int32_t const value) : value_(((int64_t) value) * MAX_SCALE) {};
+    explicit Price(double const value) : value_(normalize(value * MAX_SCALE)) {};
     Price(Price const & rhs) = default;
-    template<int8_t Prec2>
-    Price(Price<Prec2> const & rhs) : value_(normalize(rhs.value_)) {};
+    template<int8_t Scale2>
+    Price(Price<Scale2> const & rhs) : value_(normalize(rhs.value_)) {};
     Price & operator = (Price const & rhs) = default;
-    template<int8_t Prec2>
-    Price & operator = (Price<Prec2> const & rhs) {
+    template<int8_t Scale2>
+    Price & operator = (Price<Scale2> const & rhs) {
         value_ = normalize(rhs.value_);
         return *this;
     }
     Price & operator =(int32_t const rhs) {
-        value_ = rhs * PRICE_SCALE;
+        value_ = rhs * MAX_SCALE;
         return *this;
     }
     Price & operator = (double const rhs) {
-        value_ = normalize(rhs * PRICE_SCALE);
+        value_ = normalize(rhs * MAX_SCALE);
         return *this;
     }
 
@@ -79,28 +79,37 @@ public:
         return result;
     }
 
-    template<int8_t Prec2>
-    Price operator +(Price<Prec2> const & rhs) const {
+    template<int8_t Scale2>
+    Price operator +(Price<Scale2> const & rhs) const {
         Price result;
         result.value_ = normalize(value_ + rhs.value_);
         return result;
     }
 
-    enum {minPrice_ = PRICE_SCALE / powerOfTen(Precission)};
-//    enum {minPrice_ = PRICE_SCALE / PowerOf10<Precission>::value};
+    enum {minPrice_ = MAX_SCALE / powerOfTen(Scale)};
+//    enum {minPrice_ = MAX_SCALE / PowerOf10<Scale>::value};
     int64_t minPrice() const {return minPrice_;}
 
     int64_t rawValue() const {return value_;}
 private:
     int64_t normalize(int64_t target) const {
+        if (target == 0) {
+            return 0;
+        }
         if (target < 0) {
+            if (target > minPrice_ / 2) {
+                return 0;
+            }
             return ((target - 1 - (minPrice_ / 2)) / minPrice_) * minPrice_;
         } else {
+            if (target < minPrice_ / 2) {
+                return 0;
+            }
             return ((target + 1 + (minPrice_ / 2)) / minPrice_) * minPrice_;
         }
     }
 
-    //enum {precission_ = Precission};
+    //enum {scale_ = Scale};
     int64_t value_ = 0;
 };
 
