@@ -101,12 +101,12 @@ private:
             if (target > -halfMin_) {
                 return 0;
             }
-            return ((target - 1 - halfMin_) / minPrice_) * minPrice_;
+            return ((target - (1 + halfMin_)) / minPrice_) * minPrice_;
         } else {
             if (target < halfMin_) {
                 return 0;
             }
-            return ((target + 1 + halfMin_) / minPrice_) * minPrice_;
+            return ((target + (1 + halfMin_)) / minPrice_) * minPrice_;
         }
     }
 
