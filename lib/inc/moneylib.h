@@ -79,6 +79,12 @@ public:
         return result;
     }
 
+    Price operator *(int32_t const rhs) const {
+        Price result;
+        result.value_ = value_ * rhs;
+        return result;
+    }
+
     template<int8_t Scale2>
     Price operator +(Price<Scale2> const & rhs) const {
         Price result;

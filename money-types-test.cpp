@@ -158,3 +158,10 @@ TEST_CASE("Assign prices to Price<4>(1.2345", "[Money][Add]") {
         REQUIRE((out = 4).rawValue() == 4 * MAX_SCALE);
     }
 }
+
+TEST_CASE("Multiple Price<4>(1.2345) by integers", "[Money][Multiply]") {
+    HundrethPenny out(1.2345);
+    SECTION("Multiplying by 5 gives 6.1725") {
+        REQUIRE((out * 5).rawValue() == 61725 * (MAX_SCALE / 10000));
+    }
+}
