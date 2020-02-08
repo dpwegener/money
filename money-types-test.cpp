@@ -34,6 +34,7 @@ TEST_CASE("Test currency names", "[Money][Names]") {
     SECTION("Dollar") {
         Dollar out;
         REQUIRE(out.minPrice() == MAX_SCALE);
+        REQUIRE(Dollar::minPrice_ == MAX_SCALE);
     }
     SECTION("Dime") {
         Dime out;

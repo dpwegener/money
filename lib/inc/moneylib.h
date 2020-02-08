@@ -39,9 +39,12 @@ class Price {
     }
     template<int8_t Scale2>
     friend class Price;
+private:
+    explicit Price(int64_t const value) : value_(normalize(value)) {};
+
 public:
     Price() = default;
-    explicit Price(int32_t const value) : value_(((int64_t) value) * MAX_SCALE) {};
+    explicit Price(int32_t const value) : value_(((int64_t) value) * MAX_SCALE) {static_assert(Scale < 8, "Scale must be less than 8");};
     explicit Price(double const value) : value_(normalize(value * MAX_SCALE)) {};
     Price(Price const & rhs) = default;
     template<int8_t Scale2>
@@ -87,15 +90,16 @@ public:
 
     template<int8_t Scale2>
     Price operator +(Price<Scale2> const & rhs) const {
-        Price result;
-        result.value_ = normalize(value_ + rhs.value_);
+        Price result(value_ + rhs.value_);
         return result;
     }
 
-    enum {minPrice_ = MAX_SCALE / powerOfTen(Scale),
+//    enum {minPrice_ = MAX_SCALE / powerOfTen(Scale),
+//          halfMin_ = minPrice_ / 2};
+    enum {minPrice_ = MAX_SCALE / PowerOf10<Scale>::value,
           halfMin_ = minPrice_ / 2};
-//    enum {minPrice_ = MAX_SCALE / PowerOf10<Scale>::value};
-    int64_t minPrice() const {return minPrice_;}
+
+    constexpr int64_t minPrice() const {return minPrice_;}
 
     int64_t rawValue() const {return value_;}
 private:
