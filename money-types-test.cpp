@@ -6,53 +6,60 @@
 TEST_CASE("Test minimum prices", "[Money][MinPrice]") {
     SECTION("Whole numbers only") {
         Price<0> out;
-        REQUIRE(out.minPrice() == MAX_SCALE);
         auto min = out.minvalue;
         REQUIRE(min == MAX_SCALE);
     }
 
     SECTION(".1") {
         Price<1> out;
-        REQUIRE(out.minPrice() == MAX_SCALE / 10);
+        auto min = out.minvalue;
+        REQUIRE(min == MAX_SCALE / 10);
     }
 
     SECTION(".01") {
         Price<2> out;
-        REQUIRE(out.minPrice() == MAX_SCALE / 100);
+        auto min = out.minvalue;
+        REQUIRE(min == MAX_SCALE / 100);
     }
 
     SECTION(".001") {
         Price<3> out;
-        REQUIRE(out.minPrice() == MAX_SCALE / 1000);
+        auto min = out.minvalue;
+        REQUIRE(min == MAX_SCALE /1000);
     }
 
     SECTION(".0001") {
         Price<4> out;
-        REQUIRE(out.minPrice() == MAX_SCALE / 10000);
+        auto min = out.minvalue;
+        REQUIRE(min == MAX_SCALE / 10000);
     }
 }
 
 TEST_CASE("Test currency names", "[Money][Names]") {
     SECTION("Dollar") {
         Dollar out;
-        REQUIRE(out.minPrice() == MAX_SCALE);
-        REQUIRE(Dollar::minPrice_ == MAX_SCALE);
+        auto min = out.minvalue;
+        REQUIRE(min == MAX_SCALE);
     }
     SECTION("Dime") {
         Dime out;
-        REQUIRE(out.minPrice() == MAX_SCALE / 10);
+        auto min = out.minvalue;
+        REQUIRE(min == MAX_SCALE / 10);
     }
     SECTION("Penny") {
         Penny out;
-        REQUIRE(out.minPrice() == MAX_SCALE / 100);
+        auto min = out.minvalue;
+        REQUIRE(min == MAX_SCALE / 100);
     }
     SECTION("TenthPenny") {
         TenthPenny out;
-        REQUIRE(out.minPrice() == MAX_SCALE / 1000);
+        auto min = out.minvalue;
+        REQUIRE(min == MAX_SCALE / 1000);
     }
     SECTION("HundrethPenny") {
         HundrethPenny out;
-        REQUIRE(out.minPrice() == MAX_SCALE / 10000);
+        auto min = out.minvalue;
+        REQUIRE(min == MAX_SCALE/ 10000);
     }
 }
 

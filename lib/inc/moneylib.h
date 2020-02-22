@@ -5,10 +5,6 @@
 
 constexpr int32_t MAX_SCALE = 10000000;
 
-static constexpr uint32_t powerOfTen(uint8_t const exponent) noexcept {
-    return exponent == 0 ? 1 : 10 * powerOfTen(exponent - 1);
-}
-
 template<uint8_t Power>
 struct PowerOf10 {
     static_assert(Power < 8, "Power of 10 must be less than 8");
@@ -89,14 +85,8 @@ public:
         return result;
     }
 
-//    enum {minPrice_ = MAX_SCALE / powerOfTen(Scale),
-//          halfMin_ = minPrice_ / 2};
-    enum {minPrice_ = MAX_SCALE / PowerOf10<Scale>::value,
-          halfMin_ = minPrice_ / 2};
-
-    constexpr int64_t minPrice() const {return minPrice_;}
-
-    static constexpr int64_t minvalue = MAX_SCALE / PowerOf10<Scale>::value;
+    static constexpr const int64_t minvalue = MAX_SCALE / PowerOf10<Scale>::value;
+    static constexpr const int64_t halfminvalue = minvalue / 2;
     
     int64_t rawValue() const {return value_;}
 private:
@@ -105,19 +95,18 @@ private:
             return 0;
         }
         if (target < 0) {
-            if (target > -halfMin_) {
+            if (target > - halfminvalue) {
                 return 0;
             }
-            return ((target - (1 + halfMin_)) / minPrice_) * minPrice_;
+            return ((target - (1 + halfminvalue)) / minvalue) * minvalue;
         } else {
-            if (target < halfMin_) {
+            if (target < halfminvalue) {
                 return 0;
             }
-            return ((target + (1 + halfMin_)) / minPrice_) * minPrice_;
+            return ((target + (1 + halfminvalue)) / minvalue) * minvalue;
         }
     }
 
-    //enum {scale_ = Scale};
     int64_t value_ = 0;
 };
 
