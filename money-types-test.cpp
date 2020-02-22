@@ -149,17 +149,17 @@ TEST_CASE("Assign prices to Price<4>(1.2345", "[Money][Add]") {
     SECTION("Assigning 4.5678") {
         REQUIRE((out = HundrethPenny(4.5678)).rawValue() == 45678 * (MAX_SCALE / 10000));
     }
-    SECTION("Assigning Price<3>(4.567") {
-        REQUIRE((out = TenthPenny(4.567)).rawValue() == 4567 * (MAX_SCALE / 1000));
+    SECTION("Assigning Price<3>(4.5678") {
+        REQUIRE((out = TenthPenny(4.5678)).rawValue() == 4568 * (MAX_SCALE / 1000));
     }
-    SECTION("Assigning Price<2>(4.56") {
-        REQUIRE((out = Penny(4.56)).rawValue() == 456 * (MAX_SCALE / 100));
+    SECTION("Assigning Price<2>(4.5678") {
+        REQUIRE((out = Penny(4.5678)).rawValue() == 457 * (MAX_SCALE / 100));
     }
-    SECTION("Assigning Price<1>(4.5)") {
-        REQUIRE((out = Dime(4.5)).rawValue() == 45 * (MAX_SCALE / 10));
+    SECTION("Assigning Price<1>(4.5678)") {
+        REQUIRE((out = Dime(4.5678)).rawValue() == 46 * (MAX_SCALE / 10));
     }
-    SECTION("Assigning Price<0>(4)") {
-        REQUIRE((out = Dollar(4)).rawValue() == 4 * MAX_SCALE);
+    SECTION("Assigning Price<0>(4.5678)") {
+        REQUIRE((out = Dollar(4.5678)).rawValue() == 5 * MAX_SCALE);
     }
     SECTION("Assigning 4.56789") {
         REQUIRE((out = 4.56789).rawValue() == 45679 * (MAX_SCALE / 10000));
