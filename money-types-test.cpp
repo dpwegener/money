@@ -7,6 +7,8 @@ TEST_CASE("Test minimum prices", "[Money][MinPrice]") {
     SECTION("Whole numbers only") {
         Price<0> out;
         REQUIRE(out.minPrice() == MAX_SCALE);
+        auto min = out.minvalue;
+        REQUIRE(min == MAX_SCALE);
     }
 
     SECTION(".1") {

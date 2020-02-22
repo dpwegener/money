@@ -16,11 +16,6 @@ struct PowerOf10 {
 };
 
 template<>
-struct PowerOf10<1> {
-    static constexpr uint32_t value = 10;
-};
-
-template<>
 struct PowerOf10<0> {
     static constexpr uint32_t value = 1;
 };
@@ -101,6 +96,8 @@ public:
 
     constexpr int64_t minPrice() const {return minPrice_;}
 
+    static constexpr int64_t minvalue = MAX_SCALE / PowerOf10<Scale>::value;
+    
     int64_t rawValue() const {return value_;}
 private:
     int64_t normalize(int64_t target) const {
