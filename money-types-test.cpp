@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-TEST_CASE("Test minimum prices", "[Money][MinPrice]") {
+TEST_CASE("Test minimum values", "[Money][MinValue]") {
     SECTION("Whole numbers only") {
         Price<0> out;
         auto min = out.minvalue;

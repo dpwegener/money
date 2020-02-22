@@ -91,18 +91,12 @@ public:
     int64_t rawValue() const {return value_;}
 private:
     int64_t normalize(int64_t target) const {
-        if (target == 0) {
+        if (target > - halfminvalue && target < halfminvalue) {
             return 0;
         }
         if (target < 0) {
-            if (target > - halfminvalue) {
-                return 0;
-            }
             return ((target - (1 + halfminvalue)) / minvalue) * minvalue;
         } else {
-            if (target < halfminvalue) {
-                return 0;
-            }
             return ((target + (1 + halfminvalue)) / minvalue) * minvalue;
         }
     }
