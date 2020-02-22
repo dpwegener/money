@@ -16,7 +16,7 @@ struct PowerOf10<0> {
     static constexpr uint32_t value = 1;
 };
 
-template<int8_t Scale>
+template<uint8_t Scale>
 class Price {
     friend Price operator +(int32_t const arg1, Price const & arg2) {
         Price result(arg1);
@@ -28,20 +28,20 @@ class Price {
         result.value_ += arg2.value_;
         return result;
     }
-    template<int8_t Scale2>
+    template<uint8_t Scale2>
     friend class Price;
 private:
     explicit Price(int64_t const value) : value_(normalize(value)) {};
 
 public:
     Price() = default;
-    explicit Price(int32_t const value) : value_(((int64_t) value) * MAX_SCALE) {static_assert(Scale < 8, "Scale must be less than 8");};
+    explicit Price(int32_t const value) : value_(((int64_t) value) * MAX_SCALE) {};
     explicit Price(double const value) : value_(normalize(value * MAX_SCALE)) {};
     Price(Price const & rhs) = default;
-    template<int8_t Scale2>
+    template<uint8_t Scale2>
     Price(Price<Scale2> const & rhs) : value_(normalize(rhs.value_)) {};
     Price & operator = (Price const & rhs) = default;
-    template<int8_t Scale2>
+    template<uint8_t Scale2>
     Price & operator = (Price<Scale2> const & rhs) {
         value_ = normalize(rhs.value_);
         return *this;
@@ -79,7 +79,7 @@ public:
         return result;
     }
 
-    template<int8_t Scale2>
+    template<uint8_t Scale2>
     Price operator +(Price<Scale2> const & rhs) const {
         Price result(value_ + rhs.value_);
         return result;
