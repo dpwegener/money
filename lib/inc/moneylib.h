@@ -35,7 +35,7 @@ private:
 
 public:
     Price() = default;
-    explicit Price(int32_t const value) : value_(((int64_t) value) * MAX_SCALE) {};
+    explicit Price(int32_t const value) : value_(static_cast<int64_t>(value) * MAX_SCALE) {};
     explicit Price(double const value) : value_(normalize(value * MAX_SCALE)) {};
     Price(Price const & rhs) = default;
     template<uint8_t Scale2>
@@ -85,8 +85,8 @@ public:
         return result;
     }
 
-    static constexpr const int64_t minvalue = MAX_SCALE / PowerOf10<Scale>::value;
-    static constexpr const int64_t halfminvalue = minvalue / 2;
+    static constexpr const int32_t minvalue = MAX_SCALE / PowerOf10<Scale>::value;
+    static constexpr const int32_t halfminvalue = minvalue / 2;
     
     int64_t rawValue() const {return value_;}
 private:
