@@ -87,17 +87,25 @@ public:
 
     static constexpr const int32_t minvalue = MAX_SCALE / PowerOf10<Scale>::value;
     static constexpr const int32_t halfminvalue = minvalue / 2;
+
+    static constexpr int32_t minValue() {
+        return MAX_SCALE / PowerOf10<Scale>::value;
+    }
+
+    static constexpr int32_t halfMinValue() {
+        return minValue() / 2;
+    }
     
     int64_t rawValue() const {return value_;}
 private:
     int64_t normalize(int64_t target) const {
-        if (target > - halfminvalue && target < halfminvalue) {
+        if (target > - halfMinValue() && target < halfMinValue()) {
             return 0;
         }
         if (target < 0) {
-            return ((target - (1 + halfminvalue)) / minvalue) * minvalue;
+            return ((target - (1 + halfMinValue())) / minValue()) * minValue();
         } else {
-            return ((target + (1 + halfminvalue)) / minvalue) * minvalue;
+            return ((target + (1 + halfMinValue())) / minValue()) * minValue();
         }
     }
 
