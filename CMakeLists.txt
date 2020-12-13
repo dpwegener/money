@@ -11,8 +11,8 @@ add_executable(money-test
 )
 
 target_link_libraries(money-test
-    PRIVATE money-lib 
-            Catch2::Catch2
+     money-lib 
+     Catch2::Catch2
 )
 
 include(CTest)

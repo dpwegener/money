@@ -4,7 +4,7 @@ project(MoneyLib VERSION 0.0.1 LANGUAGES CXX)
 add_library(money-lib INTERFACE)
 
 target_include_directories(money-lib
-    INTERFACE inc
+    INTERFACE inc/
 )
 
 target_compile_features( money-lib 
